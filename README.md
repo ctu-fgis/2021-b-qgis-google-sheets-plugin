@@ -1,0 +1,1 @@
+# 2021-b-qgis-google-sheets-plugin
