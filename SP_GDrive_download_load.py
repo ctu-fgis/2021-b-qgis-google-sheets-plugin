@@ -32,7 +32,7 @@ def getCredentials():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'D:/skola_ING/semestr2/FGIS/SP_GDrive_QGIS/credentials.json', SCOPES)
+                filepath + '/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -53,9 +53,30 @@ def listFiles(size):
         print('Files:')
         for item in items:
             print(u'{0} ({1})'.format(item['name'], item['id']))
+            
+def search(service, query):
+    # search for the file
+    result = []
+    page_token = None
+    while True:
+        response = service.files().list(q=query,
+                                        spaces="drive",
+                                        fields="nextPageToken, files(id, name, mimeType)",
+                                        pageToken=page_token).execute()
+        # iterate over filtered files
+        for file in response.get("files", []):
+            # print(f"Found file: {file['name']} with the id {file['id']} and type {file['mimeType']}")
+            result.append((file["id"], file["name"], file["mimeType"]))
+        page_token = response.get('nextPageToken', None)
+        if not page_token:
+            # no more files
+            break
+    return result
 
-def download(file_id, filepath, filename):
+def download(filepath, filename):
     service = getCredentials()
+    search_result = search(service, query=f"name='{filename}'")
+    file_id = search_result[0][0]
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
@@ -78,11 +99,12 @@ def loadVector(filepath, filename):
     QgsProject.instance().addMapLayer(eq_layer)
 
 #listFiles(10)
-filepath = "D:/skola_ING/semestr2/FGIS/SP_GDrive_QGIS"
-file_ID_GDrive = '1s06LAx6uThbifIlJcnRoIWOscrpviaUa'
-filename = 'tabulka_test.csv'
+os.chdir(QgsProject.instance().readPath("./"))
+filepath = os.getcwd()
 
-download(file_ID_GDrive, filepath, filename)
+filename = 'eq-data.csv'
+
+download(filepath, filename)
 loadVector(filepath, filename)
 
 
