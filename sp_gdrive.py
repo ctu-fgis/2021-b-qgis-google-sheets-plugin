@@ -1,7 +1,5 @@
 #GDrive Download + load
 
-from __future__ import print_function
-
 import os.path, io#, httplib2
 
 from googleapiclient.discovery import build
@@ -9,6 +7,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from apiclient.http import MediaIoBaseDownload #, MediaFileUpload
+
+from qgis.core import QgsVectorLayer, QgsProject
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata',
@@ -90,21 +90,11 @@ def download(filepath, filename):
 
 def loadVector(filepath, filename):
     uri = "file:///"+filepath+"/"+filename+"?encoding={}&delimiter={}&xField={}&yField={}&crs={}".format("UTF-8",",", "longitude", "latitude","epsg:4326")
-
     eq_layer=QgsVectorLayer(uri,filename,"delimitedtext")
-
+    
     if not eq_layer.isValid():
         print ("Layer not loaded")
-
+    
     QgsProject.instance().addMapLayer(eq_layer)
-
-#listFiles(10)
-os.chdir(QgsProject.instance().readPath("./"))
-filepath = os.getcwd()
-
-filename = 'eq-data.csv'
-
-download(filepath, filename)
-loadVector(filepath, filename)
 
 
