@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/google_sheets_downloader" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>

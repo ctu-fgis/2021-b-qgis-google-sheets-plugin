@@ -6,6 +6,9 @@ filepath = os.getcwd()
 sys.path.insert(0, filepath)
 from sp_gdrive import loadVector, downloadSpreadsheet
 
-filename = 'eq-data_GSheets'
+filename = 'body'
+Xcol = 'X'
+Ycol = 'Y'
+EPSG = "epsg:4326"
 downloadSpreadsheet(filepath, filename)
-loadVector(filepath, filename)
+loadVector(filepath, filename, Xcol, Ycol, EPSG)
