@@ -11,8 +11,8 @@ from apiclient.http import MediaIoBaseDownload #, MediaFileUpload
 from qgis.core import QgsVectorLayer, QgsProject
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata',
-          'https://www.googleapis.com/auth/drive',
+SCOPES = [
+          'https://www.googleapis.com/auth/drive.readonly',
           'https://www.googleapis.com/auth/drive.file'
           ]
 

@@ -213,24 +213,7 @@ class GoogleSheetsDownloader:
         result = self.dlg.exec_()
         # See if OK was pressed
 
-        self.dlg.load.clicked.connect(self.callfunctions())
-        #
-        # if self.dlg.load.clicked:
-        #     os.chdir(QgsProject.instance().readPath("./"))
-        #     filepath = os.getcwd()
-        #
-        #     sys.path.insert(0, filepath)
-        #
-        #     # input data
-        #     filename = self.dlg.typeName.text()
-        #     Xcol = self.dlg.typeX.text()
-        #     Ycol = self.dlg.typeY.text()
-        #     CRS = self.dlg.selectCRS.crs()
-        #
-        #     # call funcions
-        #     from sp_gdrive import loadVector, downloadSpreadsheet
-        #     downloadSpreadsheet(filepath, filename)
-        #     loadVector(filepath, filename, Xcol, Ycol, CRS)
+        self.dlg.load.clicked.connect(lambda: self.callfunctions())
 
         if result:
             # Do something useful here - delete the line containing pass and
