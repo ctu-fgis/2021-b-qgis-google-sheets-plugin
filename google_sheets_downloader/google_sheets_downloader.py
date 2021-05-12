@@ -181,7 +181,7 @@ class GoogleSheetsDownloader:
                 action)
             self.iface.removeToolBarIcon(action)
 
-    def callfunctions(self):
+    def on_load(self):
         os.chdir(QgsProject.instance().readPath("./"))
         filepath = os.getcwd()
 
@@ -213,7 +213,7 @@ class GoogleSheetsDownloader:
         result = self.dlg.exec_()
         # See if OK was pressed
 
-        self.dlg.load.clicked.connect(lambda: self.callfunctions())
+        self.dlg.load.clicked.connect(lambda: self.on_load())
 
         if result:
             # Do something useful here - delete the line containing pass and
