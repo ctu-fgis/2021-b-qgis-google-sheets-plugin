@@ -32,7 +32,7 @@ from .resources import *
 # Import the code for the dialog
 from .google_sheets_downloader_dialog import GoogleSheetsDownloaderDialog
 import os.path
-
+from qgis.core import (QgsApplication, QgsTask, QgsMessageLog)
 
 class GoogleSheetsDownloader:
     """QGIS Plugin Implementation."""
@@ -193,10 +193,12 @@ class GoogleSheetsDownloader:
         Ycol = self.dlg.typeY.text()
         CRS = self.dlg.selectCRS.crs()
 
-        #call funcions
-        from sp_gdrive import loadVector, downloadSpreadsheet
-        downloadSpreadsheet(filepath, filename)
-        loadVector(filepath, filename, Xcol, Ycol, CRS)
+        task = LoadTask(filepath,filename,Xcol,Ycol,CRS)
+        QgsApplication.taskManager().addTask(task)
+        #call functions
+        # from sp_gdrive import loadVector, downloadSpreadsheet
+        # downloadSpreadsheet(filepath, filename)
+        # loadVector(filepath, filename, Xcol, Ycol, CRS)
 
     def run(self):
         """Run method that performs all the real work"""
@@ -219,4 +221,27 @@ class GoogleSheetsDownloader:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
             pass
+
+class LoadTask(QgsTask):
+    def __init__(self, filepath, filename, Xcol, Ycol, CRS):
+        super().__init__(filepath, filename, Xcol, Ycol, CRS)
+
+        self.filepath = filepath
+        self.filename = filename
+        self.Xcol = Xcol
+        self.Ycol = Ycol
+        self.CRS = CRS
+
+    def run(self):
+        from sp_gdrive import loadVector, downloadSpreadsheet
+        downloadSpreadsheet(filepath, filename)
+        loadVector(filepath, filename, Xcol, Ycol, CRS)
+
+    def finished(self, result):
+        if result:
+            QgsMessageLog.logMessage(
+                'Layer added ^^')
+        else:
+            QgsMessageLog.logMessage(
+                'Layer not added :(')
 

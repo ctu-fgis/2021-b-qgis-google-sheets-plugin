@@ -39,7 +39,7 @@ def getCredentials(filepath):
             token.write(creds.to_json())
 
     return build('drive', 'v3', credentials=creds)
-            
+
 def search(service, query):
     # search for the file
     result = []
@@ -79,8 +79,10 @@ def downloadSpreadsheet(filepath, filename):
 def loadVector(filepath, filename, X, Y, CRS):
     uri = "file:///"+filepath+"/"+filename+".csv"+"?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format("UTF-8",",", X, Y, CRS, ",")
     eq_layer=QgsVectorLayer(uri,filename,"delimitedtext")
-    
+
     if not eq_layer.isValid():
-        print ("Layer not loaded")
-    
+        print("Layer not loaded")
+
+
     QgsProject.instance().addMapLayer(eq_layer)
+    isLoaded = True
