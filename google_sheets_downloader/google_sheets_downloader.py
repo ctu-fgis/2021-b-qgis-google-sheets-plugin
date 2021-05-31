@@ -33,6 +33,7 @@ from .resources import *
 from .google_sheets_downloader_dialog import GoogleSheetsDownloaderDialog
 import os.path
 from qgis.core import (QgsApplication, QgsTask, QgsMessageLog)
+from sp_gdrive import loadVector, downloadSpreadsheet
 
 class GoogleSheetsDownloader:
     """QGIS Plugin Implementation."""
@@ -181,25 +182,6 @@ class GoogleSheetsDownloader:
                 action)
             self.iface.removeToolBarIcon(action)
 
-    def on_load(self):
-        os.chdir(QgsProject.instance().readPath("./"))
-        filepath = os.getcwd()
-
-        sys.path.insert(0, filepath)
-
-        # input data
-        filename = self.dlg.typeName.text()
-        Xcol = self.dlg.typeX.text()
-        Ycol = self.dlg.typeY.text()
-        CRS = self.dlg.selectCRS.crs()
-
-        task = LoadTask(filepath,filename,Xcol,Ycol,CRS)
-        QgsApplication.taskManager().addTask(task)
-        #call functions
-        # from sp_gdrive import loadVector, downloadSpreadsheet
-        # downloadSpreadsheet(filepath, filename)
-        # loadVector(filepath, filename, Xcol, Ycol, CRS)
-
     def run(self):
         """Run method that performs all the real work"""
 
@@ -222,10 +204,27 @@ class GoogleSheetsDownloader:
             # substitute with your code.
             pass
 
-class LoadTask(QgsTask):
-    def __init__(self, filepath, filename, Xcol, Ycol, CRS):
-        super().__init__(filepath, filename, Xcol, Ycol, CRS)
+    def on_load(self):
+        os.chdir(QgsProject.instance().readPath("./"))
+        filepath = os.getcwd()
 
+        sys.path.insert(0, filepath)
+
+        # input data
+        filename = self.dlg.typeName.text()
+        Xcol = self.dlg.typeX.text()
+        Ycol = self.dlg.typeY.text()
+        CRS = self.dlg.selectCRS.crs()
+
+        task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
+        QgsApplication.taskManager().addTask(task)
+        QgsMessageLog.logMessage('Authorize in your browser')
+
+        # loadVector(filepath, filename, Xcol, Ycol, CRS)
+
+class LoadTask(QgsTask):
+    def __init__(self, description, filepath, filename, Xcol, Ycol, CRS):
+        super().__init__(description)
         self.filepath = filepath
         self.filename = filename
         self.Xcol = Xcol
@@ -233,15 +232,20 @@ class LoadTask(QgsTask):
         self.CRS = CRS
 
     def run(self):
-        from sp_gdrive import loadVector, downloadSpreadsheet
-        downloadSpreadsheet(filepath, filename)
-        loadVector(filepath, filename, Xcol, Ycol, CRS)
+        QgsMessageLog.logMessage('Started task "{}"'.format(
+            self.description()))
+
+        downloadSpreadsheet(self.filepath, self.filename)
+
+
+        if self.isCanceled():
+            return False
+
+        return True
 
     def finished(self, result):
         if result:
+            # loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
             QgsMessageLog.logMessage(
-                'Layer added ^^')
-        else:
-            QgsMessageLog.logMessage(
-                'Layer not added :(')
+                'Task "{}" completed'.format(self.description()))
 
