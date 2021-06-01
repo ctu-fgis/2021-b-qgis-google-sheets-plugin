@@ -33,7 +33,7 @@ from .resources import *
 from .google_sheets_downloader_dialog import GoogleSheetsDownloaderDialog
 import os.path
 from qgis.core import (QgsApplication, QgsTask, QgsMessageLog)
-from sp_gdrive import loadVector, downloadSpreadsheet
+from sp_gdrive import downloadSpreadsheet
 
 class GoogleSheetsDownloader:
     """QGIS Plugin Implementation."""
@@ -190,14 +190,13 @@ class GoogleSheetsDownloader:
         if self.first_start == True:
             self.first_start = False
             self.dlg = GoogleSheetsDownloaderDialog()
+            self.dlg.load.clicked.connect(self.on_load)
 
         # show the dialog
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()
         # See if OK was pressed
-
-        self.dlg.load.clicked.connect(lambda: self.on_load())
 
         if result:
             # Do something useful here - delete the line containing pass and
@@ -208,7 +207,7 @@ class GoogleSheetsDownloader:
         os.chdir(QgsProject.instance().readPath("./"))
         filepath = os.getcwd()
 
-        sys.path.insert(0, filepath)
+        # sys.path.insert(0, filepath)
 
         # input data
         filename = self.dlg.typeName.text()
@@ -235,17 +234,27 @@ class LoadTask(QgsTask):
         QgsMessageLog.logMessage('Started task "{}"'.format(
             self.description()))
 
-        downloadSpreadsheet(self.filepath, self.filename)
+        # downloadSpreadsheet(self.filepath, self.filename)
 
+        # if self.isCanceled():
+        #     return False
 
-        if self.isCanceled():
-            return False
-
+        # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
         return True
 
     def finished(self, result):
+        QgsMessageLog.logMessage('???')
         if result:
-            # loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+            # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
             QgsMessageLog.logMessage(
                 'Task "{}" completed'.format(self.description()))
 
+    def loadVector(self, filepath, filename, X, Y, CRS):
+        uri = "file:///"+filepath+"/"+filename+".csv"+"?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format("UTF-8",",", X, Y, CRS, ",")
+        eq_layer=QgsVectorLayer(uri,filename,"delimitedtext")
+
+        if not eq_layer.isValid():
+            print("Layer not loaded")
+
+        QgsProject.instance().addMapLayer(eq_layer)
+        isLoaded = True
