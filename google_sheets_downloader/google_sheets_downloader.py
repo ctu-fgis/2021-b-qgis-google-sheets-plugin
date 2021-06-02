@@ -9,7 +9,8 @@
         begin                : 2021-04-22
         git sha              : $Format:%H$
         copyright            : (C) 2021 by Group B - FGIS 2021
-        email                : monika.krizova@fsv.cvut.cz
+        email                : marek.hoffmann@fsv.cvut.cz,
+                               monika.krizova@fsv.cvut.cz
  ***************************************************************************/
 
 /***************************************************************************

@@ -73,4 +73,4 @@ def downloadSpreadsheet(filepath, filename):
     with io.open(filepath+"/"+filename+".csv", "wb") as f:
 #        fh.seek(0)
         f.write(fh.read())
-    print('downloaded')
+    QgsMessageLog.logMessage('Downloaded')
