@@ -243,12 +243,12 @@ class GoogleSheetsDownloader2:
 
         # input data
         filename = self.dockwidget.typeName.text()
-        # QgsMessageLog.logMessage(filename)
+        # QgsMessageLog.logMessage(filepath)
         Xcol = self.dockwidget.typeX.text()
         Ycol = self.dockwidget.typeY.text()
         CRS = self.dockwidget.selectCRS.crs()
 
-        downloadSpreadsheet(filepath, filename)
+        # downloadSpreadsheet(filepath, filename)
 
         # task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
         task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
@@ -256,20 +256,20 @@ class GoogleSheetsDownloader2:
         QgsApplication.taskManager().addTask(task)
         QgsMessageLog.logMessage('Authorize in your browser')
 
-        self.loadVector(filepath, filename, Xcol, Ycol, CRS)
+        # self.loadVector(filepath, filename, Xcol, Ycol, CRS)
 
-    def loadVector(self, filepath, filename, X, Y, CRS):
-        QgsMessageLog.logMessage(filepath)
-        uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
-            "UTF-8", ",", X, Y, CRS, ",")
-        QgsMessageLog.logMessage(uri)
-        eq_layer = QgsVectorLayer(uri, filename, "delimitedtext")
-
-        if not eq_layer.isValid():
-            print("Layer not loaded")
-
-        QgsProject.instance().addMapLayer(eq_layer)
-        isLoaded = True
+    # def loadVector(self, filepath, filename, X, Y, CRS):
+    #     QgsMessageLog.logMessage(filepath)
+    #     uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
+    #         "UTF-8", ",", X, Y, CRS, ",")
+    #     # QgsMessageLog.logMessage(uri)
+    #     eq_layer = QgsVectorLayer(uri, filename, "delimitedtext")
+    #
+    #     if not eq_layer.isValid():
+    #         print("Layer not loaded")
+    #
+    #     QgsProject.instance().addMapLayer(eq_layer)
+    #     isLoaded = True
 
     def complete_task_processing(self, taskResult):
         QgsMessageLog.logMessage('Task finished')
@@ -287,12 +287,14 @@ class LoadTask(QgsTask):
         self.CRS = CRS
 
     def run(self):
-        QgsMessageLog.logMessage('Started task "{}"'.format(
-            self.description()))
+        QgsMessageLog.logMessage('Started task authorization')
 
-        downloadSpreadsheet(self.filepath, self.filename)
+        # downloadSpreadsheet(self.filepath, self.filename)
         # if self.isCanceled():
         #     return False
+
+        a = 1+1
+        QgsMessageLog.logMessage(a)
 
         # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
@@ -300,19 +302,21 @@ class LoadTask(QgsTask):
         return True
 
     def finished(self, result):
-        self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
-        QgsMessageLog.logMessage('Task finished')
+        # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        QgsMessageLog.logMessage('Task finished!!!')
         if result:
             # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
             QgsMessageLog.logMessage(
                 'Task "{}" completed'.format(self.description()))
 
     def loadVector(self, filepath, filename, X, Y, CRS):
-        uri = "file:///"+filepath+"/"+filename+".csv"+"?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format("UTF-8",",", X, Y, CRS, ",")
-        eq_layer=QgsVectorLayer(uri,filename,"delimitedtext")
+        uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
+        "UTF-8", ",", X, Y, CRS, ",")
+        new_layer=QgsVectorLayer(uri,filename,"delimitedtext")
+        QgsMessageLog.logMessage('Layer added to the current project')
 
-        if not eq_layer.isValid():
+        if not new_layer.isValid():
             print("Layer not loaded")
 
-        QgsProject.instance().addMapLayer(eq_layer)
+        QgsProject.instance().addMapLayer(new_layer)
         isLoaded = True

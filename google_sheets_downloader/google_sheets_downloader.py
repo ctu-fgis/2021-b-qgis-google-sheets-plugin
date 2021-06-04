@@ -206,10 +206,10 @@ class GoogleSheetsDownloader:
             pass
 
     def on_load(self):
-        # os.chdir(QgsProject.instance().readPath("./"))
-        # filepath = os.getcwd()
+        os.chdir(QgsProject.instance().readPath("./"))
+        filepath = os.getcwd()
 
-        # sys.path.insert(0, filepath)
+        sys.path.insert(0, filepath)
 
         # input data
         filename = self.dlg.typeName.text()
@@ -217,9 +217,9 @@ class GoogleSheetsDownloader:
         Ycol = self.dlg.typeY.text()
         CRS = self.dlg.selectCRS.crs()
 
-        # task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
-        task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
-        task.objectSignal.connect(self.complete_task_processing)
+        task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
+        # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
+        # task.objectSignal.connect(self.complete_task_processing)
         QgsApplication.taskManager().addTask(task)
         # QgsMessageLog.logMessage('Authorize in your browser')
 
@@ -230,15 +230,15 @@ class GoogleSheetsDownloader:
         
 class LoadTask(QgsTask):
 
-    objectSignal = pyqtSignal(object)
+    # objectSignal = pyqtSignal(object)
 
     def __init__(self, description, filepath, filename, Xcol, Ycol, CRS):
         super().__init__(description)
-        # self.filepath = filepath
-        # self.filename = filename
-        # self.Xcol = Xcol
-        # self.Ycol = Ycol
-        # self.CRS = CRS
+        self.filepath = filepath
+        self.filename = filename
+        self.Xcol = Xcol
+        self.Ycol = Ycol
+        self.CRS = CRS
 
     def run(self):
         QgsMessageLog.logMessage('Started task "{}"'.format(
@@ -248,10 +248,12 @@ class LoadTask(QgsTask):
 
         # if self.isCanceled():
         #     return False
+        a = 1 + 1
+        QgsMessageLog.logMessage(a)
 
         # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
-        self.objectSignal.emit()
+        # self.objectSignal.emit()
         return True
 
     def finished(self, result):
