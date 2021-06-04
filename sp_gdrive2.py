@@ -40,6 +40,19 @@ def getCredentials(filepath):
 
     return build('drive', 'v3', credentials=creds)
 
+def loadVector(filepath, filename, X, Y, CRS):
+    #QgsMessageLog.logMessage(filepath)
+    uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
+        "UTF-8", ",", X, Y, CRS, ",")
+    #QgsMessageLog.logMessage(uri)
+    eq_layer = QgsVectorLayer(uri, filename, "delimitedtext")
+
+    if not eq_layer.isValid():
+        print("Layer not loaded")
+
+    QgsProject.instance().addMapLayer(eq_layer)
+    isLoaded = True
+
 def search(service, query):
     # search for the file
     result = []
