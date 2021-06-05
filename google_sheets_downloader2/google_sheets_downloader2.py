@@ -243,14 +243,13 @@ class GoogleSheetsDownloader2:
 
         # input data
         filename = self.dockwidget.typeName.text()
-        # QgsMessageLog.logMessage(filepath)
         Xcol = self.dockwidget.typeX.text()
         Ycol = self.dockwidget.typeY.text()
         CRS = self.dockwidget.selectCRS.crs()
 
         # downloadSpreadsheet(filepath, filename)
 
-        # task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
+        # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
         task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
         # task.objectSignal.connect(self.complete_task_processing)
         QgsApplication.taskManager().addTask(task)
@@ -289,23 +288,20 @@ class LoadTask(QgsTask):
     def run(self):
         QgsMessageLog.logMessage('Started task authorization')
 
-        # downloadSpreadsheet(self.filepath, self.filename)
+        downloadSpreadsheet(self.filepath, self.filename)
         # if self.isCanceled():
         #     return False
 
-        a = 1+1
-        QgsMessageLog.logMessage(a)
-
-        # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        # a = 1+1
+        # QgsMessageLog.logMessage(a)
 
         # self.objectSignal.emit()
         return True
 
     def finished(self, result):
-        # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
         QgsMessageLog.logMessage('Task finished!!!')
         if result:
-            # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
             QgsMessageLog.logMessage(
                 'Task "{}" completed'.format(self.description()))
 
