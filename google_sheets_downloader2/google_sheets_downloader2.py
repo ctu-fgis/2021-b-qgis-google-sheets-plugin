@@ -291,6 +291,6 @@ class LoadTask(QgsTask):
         return True
 
     def finished(self, result):
-        self.objectSignal.connect()
+        # self.objectSignal.connect()
         # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
         QgsMessageLog.logMessage('Task finished!!!!')
