@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
+from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 # Initialize Qt resources from file resources.py
@@ -237,45 +237,39 @@ class GoogleSheetsDownloader2:
 
     def on_load(self):
         os.chdir(QgsProject.instance().readPath("./"))
-        filepath = os.getcwd()
+        self.filepath = os.getcwd()
 
         # sys.path.insert(0, filepath)
 
         # input data
-        filename = self.dockwidget.typeName.text()
-        Xcol = self.dockwidget.typeX.text()
-        Ycol = self.dockwidget.typeY.text()
-        CRS = self.dockwidget.selectCRS.crs()
-
-        # downloadSpreadsheet(filepath, filename)
+        self.filename = self.dockwidget.typeName.text()
+        self.Xcol = self.dockwidget.typeX.text()
+        self.Ycol = self.dockwidget.typeY.text()
+        self.CRS = self.dockwidget.selectCRS.crs()
 
         # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
-        task = LoadTask("authorization", filepath, filename, Xcol, Ycol, CRS)
-        # task.objectSignal.connect(self.complete_task_processing)
+        task = LoadTask("authorization", self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        task.objectSignal.connect(self.complete_task_processing)
         QgsApplication.taskManager().addTask(task)
         QgsMessageLog.logMessage('Authorize in your browser')
 
-        # self.loadVector(filepath, filename, Xcol, Ycol, CRS)
-
-    # def loadVector(self, filepath, filename, X, Y, CRS):
-    #     QgsMessageLog.logMessage(filepath)
-    #     uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
-    #         "UTF-8", ",", X, Y, CRS, ",")
-    #     # QgsMessageLog.logMessage(uri)
-    #     eq_layer = QgsVectorLayer(uri, filename, "delimitedtext")
-    #
-    #     if not eq_layer.isValid():
-    #         print("Layer not loaded")
-    #
-    #     QgsProject.instance().addMapLayer(eq_layer)
-    #     isLoaded = True
-
     def complete_task_processing(self, taskResult):
-        QgsMessageLog.logMessage('Task finished')
+        self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
+    def loadVector(self, filepath, filename, X, Y, CRS):
+        uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
+            "UTF-8", ",", X, Y, CRS, ",")
+        new_layer = QgsVectorLayer(uri, filename, "delimitedtext")
+        QgsMessageLog.logMessage('Layer added to the current project')
+
+        if not new_layer.isValid():
+            print("Layer not loaded")
+
+        QgsProject.instance().addMapLayer(new_layer)
+        isLoaded = True
 
 class LoadTask(QgsTask):
-    # objectSignal = pyqtSignal(object)
+    objectSignal = pyqtSignal(object)
 
     def __init__(self, description, filepath, filename, Xcol, Ycol, CRS):
         super().__init__(description)
@@ -284,6 +278,7 @@ class LoadTask(QgsTask):
         self.Xcol = Xcol
         self.Ycol = Ycol
         self.CRS = CRS
+        self.result = None
 
     def run(self):
         QgsMessageLog.logMessage('Started task authorization')
@@ -292,27 +287,10 @@ class LoadTask(QgsTask):
         # if self.isCanceled():
         #     return False
 
-        # a = 1+1
-        # QgsMessageLog.logMessage(a)
-
-        # self.objectSignal.emit()
+        self.objectSignal.emit(self.result)
         return True
 
     def finished(self, result):
-        self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
-        QgsMessageLog.logMessage('Task finished!!!')
-        if result:
-            QgsMessageLog.logMessage(
-                'Task "{}" completed'.format(self.description()))
-
-    def loadVector(self, filepath, filename, X, Y, CRS):
-        uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
-        "UTF-8", ",", X, Y, CRS, ",")
-        new_layer=QgsVectorLayer(uri,filename,"delimitedtext")
-        QgsMessageLog.logMessage('Layer added to the current project')
-
-        if not new_layer.isValid():
-            print("Layer not loaded")
-
-        QgsProject.instance().addMapLayer(new_layer)
-        isLoaded = True
+        self.objectSignal.connect()
+        # self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        QgsMessageLog.logMessage('Task finished!!!!')
