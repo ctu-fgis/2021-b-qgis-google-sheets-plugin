@@ -69,10 +69,10 @@ def downloadSpreadsheet(filepath, filename):
     done = False
     while done is False:
         status, done = downloader.next_chunk()
-        # "Download %d%%." % int(status.progress() * 100)
+
+        "Download %d%%." % int(status.progress() * 100)
     with io.open(filepath+"/"+filename+".csv", "wb") as f:
-        # fh.seek(0)
+        fh.seek(0)
         f.write(fh.read())
-        print('Downloaded')
 
 
