@@ -236,10 +236,7 @@ class GoogleSheetsDownloader2:
             self.dockwidget.show()
 
     def on_load(self):
-        os.chdir(QgsProject.instance().readPath("./"))
-        self.filepath = os.getcwd()
-
-        sys.path.insert(0, self.filepath)
+        self.filepath = os.path.dirname(__file__)
 
         # input data
         self.filename = self.dockwidget.typeName.text()
@@ -251,7 +248,6 @@ class GoogleSheetsDownloader2:
         downloadSpreadsheet(self.filepath, self.filename)
 
         self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
-        QgsMessageLog.logMessage('Layer added')
 
         # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
         # task = LoadTask("authorization", self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
@@ -264,11 +260,12 @@ class GoogleSheetsDownloader2:
     def loadVector(self, filepath, filename, X, Y, CRS):
         uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
             "UTF-8", ",", X, Y, CRS, ",")
+        # QgsMessageLog.logMessage(uri)
         new_layer = QgsVectorLayer(uri, filename, "delimitedtext")
         QgsMessageLog.logMessage('Layer added to the current project')
 
         if not new_layer.isValid():
-            print("Layer not loaded")
+            QgsMessageLog.logMessage("Layer not loaded")
 
         QgsProject.instance().addMapLayer(new_layer)
         # isLoaded = True
