@@ -274,13 +274,11 @@ class GoogleSheetsDownloader2:
 
         if not new_layer.isValid():
             iface.messageBar().pushMessage('Invalid coordinate columns parameters.', duration=3, level=Qgis.Critical)
+        elif not self.CRS:
+            iface.messageBar().pushMessage('No coordinate system assigned.', duration=3, level=Qgis.Warning)
         else:
             QgsProject.instance().addMapLayer(new_layer)
-            if not self.CRS:
-                iface.messageBar().pushMessage('No coordinate system assigned.', duration=3, level=Qgis.Warning)
-            else:
-                iface.messageBar().pushMessage('Layer "{}" loaded.'.format(filename), duration=3, level=Qgis.Success)
-
+            iface.messageBar().pushMessage('Layer "{}" loaded.'.format(filename), duration=3, level=Qgis.Success)
 
 # class LoadTask(QgsTask):
 #     objectSignal = pyqtSignal(object)
