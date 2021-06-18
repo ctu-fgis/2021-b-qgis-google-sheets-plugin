@@ -31,6 +31,7 @@ def getCredentials(filepath):
         except RefreshError:
             os.remove('token.json')
 
+    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
