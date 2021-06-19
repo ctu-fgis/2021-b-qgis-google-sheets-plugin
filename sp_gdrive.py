@@ -20,9 +20,9 @@ def getCredentials(filepath):
     """
     Get and store access to the Google Drive account.
 
-    @param filepath: path to the plugin/project
+    :param filepath: path to the plugin/project
 
-    @return: GDrive access
+    :return: GDrive access
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -48,10 +48,10 @@ def search(service, query):
     """
     Search for the file on GDrive.
 
-    @param service: credentials in the required format
-    @param query: modified name of the sheet
+    :param service: credentials in the required format
+    :param query: modified name of the sheet
 
-    @return: searched file ID, file name, file mimeType
+    :return: searched file ID, file name, file mimeType
     """
     result = []
     page_token = None
@@ -74,8 +74,8 @@ def downloadSpreadsheet(filepath, filename):
     """
     Download sheet as a csv file from GDrive.
 
-    @param filepath: path to the plugin/project
-    @param filename: name of the sheet on GDrive
+    :param filepath: path to the plugin/project
+    :param filename: name of the sheet on GDrive
     """
     service = getCredentials(filepath)
     search_result = search(service, query=f"name='{filename}'")

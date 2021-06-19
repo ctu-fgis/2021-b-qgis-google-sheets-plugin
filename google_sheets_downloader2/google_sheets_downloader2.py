@@ -271,11 +271,11 @@ class GoogleSheetsDownloader2:
         """
         Create new point layer from the csv file.
 
-        @param filepath: path to the plugin/project
-        @param filename: name of the sheet on GDrive
-        @param X: name of the column with X coordinate
-        @param Y: name of the column with Y coordinate
-        @param CRS: coordinate reference system
+        :param filepath: path to the plugin/project
+        :param filename: name of the sheet on GDrive
+        :param X: name of the column with X coordinate
+        :param Y: name of the column with Y coordinate
+        :param CRS: coordinate reference system
         """
         uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
             "UTF-8", ",", X, Y, CRS, ",")
