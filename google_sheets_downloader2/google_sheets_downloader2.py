@@ -29,8 +29,9 @@ from .resources import *
 
 # Import the code for the DockWidget
 from .google_sheets_downloader2_dockwidget import GoogleSheetsDownloader2DockWidget
-from qgis.core import QgsApplication, QgsTask, QgsMessageLog, QgsProject, QgsVectorLayer
+from qgis.core import QgsApplication, QgsMessageLog, QgsProject, QgsVectorLayer, Qgis
 from sp_gdrive import downloadSpreadsheet
+from qgis.utils import iface
 
 import os.path, sys
 
@@ -242,12 +243,14 @@ class GoogleSheetsDownloader2:
         self.filename = self.dockwidget.typeName.text()
         self.Xcol = self.dockwidget.typeX.text()
         self.Ycol = self.dockwidget.typeY.text()
-        self.CRS = self.dockwidget.selectCRS.crs()
+        self.CRS = self.dockwidget.selectCRS.crs().authid()
 
-        QgsMessageLog.logMessage('Authorize in your browser')
-        downloadSpreadsheet(self.filepath, self.filename)
-
-        self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
+        try:
+            downloadSpreadsheet(self.filepath, self.filename)
+        except IndexError:
+            iface.messageBar().pushMessage('No such file "{}" located on your Google Drive account.'.format(self.filename), duration=3, level=Qgis.Critical)
+        else:
+            self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
         # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
         # task = LoadTask("authorization", self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
@@ -260,15 +263,17 @@ class GoogleSheetsDownloader2:
     def loadVector(self, filepath, filename, X, Y, CRS):
         uri = "file:///" + filepath + "/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
             "UTF-8", ",", X, Y, CRS, ",")
-        # QgsMessageLog.logMessage(uri)
+
         new_layer = QgsVectorLayer(uri, filename, "delimitedtext")
-        QgsMessageLog.logMessage('Layer added to the current project')
 
         if not new_layer.isValid():
-            QgsMessageLog.logMessage("Layer not loaded")
-
-        QgsProject.instance().addMapLayer(new_layer)
-        # isLoaded = True
+            iface.messageBar().pushMessage('Invalid coordinate columns parameters.', duration=3, level=Qgis.Critical)
+        elif not self.CRS:
+            QgsProject.instance().addMapLayer(new_layer)
+            iface.messageBar().pushMessage('No coordinate system assigned.', duration=3, level=Qgis.Warning)
+        else:
+            QgsProject.instance().addMapLayer(new_layer)
+            iface.messageBar().pushMessage('Layer "{}" loaded.'.format(filename), duration=3, level=Qgis.Success)
 
 # class LoadTask(QgsTask):
 #     objectSignal = pyqtSignal(object)
