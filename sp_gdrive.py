@@ -22,7 +22,7 @@ def getCredentials(filepath):
 
     @param filepath: path to the plugin/project
 
-    @return: token.json file, GDrive access
+    @return: GDrive access
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -51,7 +51,7 @@ def search(service, query):
     @param service: credentials in the required format
     @param query: modified name of the sheet
 
-    @return: searched file ID
+    @return: searched file ID, file name, file mimeType
     """
     result = []
     page_token = None
