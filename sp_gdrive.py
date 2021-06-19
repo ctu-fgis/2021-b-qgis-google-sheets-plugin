@@ -19,6 +19,7 @@ SCOPES = [
 def getCredentials(filepath):
     """Shows basic usage of the Drive v3 API.
     Prints the names and ids of the first 10 files the user has access to.
+    @param filepath: path to the plugin/project
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -41,7 +42,12 @@ def getCredentials(filepath):
     return build('drive', 'v3', credentials=creds)
 
 def search(service, query):
-    # search for the file
+    """
+    search for the file on GDrive
+    @param service: credentials in the required format
+    @param query: modified name of the sheet
+    @return: list of the first 10 files on GDrive
+    """
     result = []
     page_token = None
     while True:
@@ -60,6 +66,11 @@ def search(service, query):
     return result
 
 def downloadSpreadsheet(filepath, filename):
+    """
+    download sheet as a csv file from GDrive
+    @param filepath: path to the plugin/project
+    @param filename: name of the sheet on GDrive
+    """
     service = getCredentials(filepath)
     search_result = search(service, query=f"name='{filename}'")
     file_id = search_result[0][0]
@@ -69,7 +80,6 @@ def downloadSpreadsheet(filepath, filename):
     done = False
     while done is False:
         status, done = downloader.next_chunk()
-
         "Download %d%%." % int(status.progress() * 100)
     with io.open(filepath+"/"+filename+".csv", "wb") as f:
         fh.seek(0)
