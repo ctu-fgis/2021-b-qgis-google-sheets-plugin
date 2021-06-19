@@ -240,8 +240,8 @@ class GoogleSheetsDownloader2:
         self.filepath = os.path.dirname(__file__)
 =======
         """
-        Start after pressing "load", assing values from the plugin to the variables.
-        Call functions for donwloading data and create new QGIS layer.
+        Start after pressing "load", assigning values from the plugin to the variables.
+        Call functions for downloading data and create new QGIS layer.
         """
         # self.filepath = os.path.dirname(__file__)
         os.chdir(QgsProject.instance().readPath("./"))
@@ -269,7 +269,8 @@ class GoogleSheetsDownloader2:
 
     def loadVector(self, filepath, filename, X, Y, CRS):
         """
-        create new point layer from the csv file
+        Create new point layer from the csv file.
+
         @param filepath: path to the plugin/project
         @param filename: name of the sheet on GDrive
         @param X: name of the column with X coordinate
