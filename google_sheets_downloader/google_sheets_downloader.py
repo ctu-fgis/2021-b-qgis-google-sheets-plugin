@@ -261,7 +261,7 @@ class GoogleSheetsDownloader:
     #     self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
     def loadVector(self, filepath, filename, X, Y, CRS):
-        uri = "file:///" + filepath + "\sheets/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
+        uri = "file:///" + filepath + "/sheets/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
             "UTF-8", ",", X, Y, CRS, ",")
 
         new_layer = QgsVectorLayer(uri, filename, "delimitedtext")

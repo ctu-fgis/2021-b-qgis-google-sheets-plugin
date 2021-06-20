@@ -73,7 +73,8 @@ def downloadSpreadsheet(filepath, filename):
     while done is False:
         status, done = downloader.next_chunk()
 
-    with io.open(r filepath +'/sheets/'+filename+".csv", "wb") as f:
+    with io.open(filepath +"/sheets/"+filename+".csv", "wb") as f:
+        fh.seek(0)
         f.write(fh.read())
 
 
