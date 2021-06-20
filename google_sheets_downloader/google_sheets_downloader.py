@@ -238,8 +238,6 @@ class GoogleSheetsDownloader:
 
     def on_load(self):
         self.filepath = os.path.dirname(__file__)
-        self.csvpath = self.filepath + '/sheets'
-        QgsMessageLog.logMessage(self.csvpath)
 
         # input data
         self.filename = self.dockwidget.typeName.text()
