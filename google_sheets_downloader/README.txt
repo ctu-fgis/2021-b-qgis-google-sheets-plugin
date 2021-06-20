@@ -1,6 +1,6 @@
 Plugin Builder Results
 
-Your plugin GoogleSheetsDownloader was created in:
+Your plugin GoogleSheetsDownloader2 was created in:
     C:/Users/monik/OneDrive/Documents/GitHub/2021-b-qgis-google-sheets-plugin/2021-b-qgis-google-sheets-plugin\google_sheets_downloader
 
 Your QGIS plugin directory is located at:
@@ -17,11 +17,11 @@ What's Next:
 
   * Test the plugin by enabling it in the QGIS plugin manager
 
-  * Customize it by editing the implementation file: ``google_sheets_downloader.py``
+  * Customize it by editing the implementation file: ``google_sheets_downloader2.py``
 
   * Create your own custom icon, replacing the default icon.png
 
-  * Modify your user interface by opening GoogleSheetsDownloader_dialog_base.ui in Qt Designer
+  * Modify your user interface by opening GoogleSheetsDownloader2_dockwidget_base.ui in Qt Designer
 
   * You can use the Makefile to compile your Ui and resource files when
     you make changes. This requires GNU make (gmake)

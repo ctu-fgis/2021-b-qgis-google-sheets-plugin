@@ -1,12 +1,12 @@
 #/***************************************************************************
-# GoogleSheetsDownloader
+# GoogleSheetsDownloader2
 #
 # This plugin downloads data from Google Sheets
 #							 -------------------
-#		begin				: 2021-04-22
+#		begin				: 2021-06-04
 #		git sha				: $Format:%H$
 #		copyright			: (C) 2021 by Group B - FGIS 2021
-#		email				: monika.krizova@fsv.cvut.cz
+#		email				: marek.hoffmann@fsv.cvut.cz, monika.krizova@fsv.cvut.cz
 # ***************************************************************************/
 #
 #/***************************************************************************
@@ -38,15 +38,15 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	google_sheets_downloader.py google_sheets_downloader_dialog.py
+	google_sheets_downloader.py google_sheets_downloader_dockwidget.py
 
-PLUGINNAME = google_sheets_downloader
+PLUGINNAME = google_sheets_downloader2
 
 PY_FILES = \
 	__init__.py \
-	google_sheets_downloader.py google_sheets_downloader_dialog.py
+	google_sheets_downloader.py google_sheets_downloader_dockwidget.py
 
-UI_FILES = google_sheets_downloader_dialog_base.ui
+UI_FILES = google_sheets_downloader_dockwidget_base.ui
 
 EXTRAS = metadata.txt icon.png
 

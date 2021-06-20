@@ -8,8 +8,8 @@
 
 """
 
-__author__ = 'monika.krizova@fsv.cvut.cz'
-__date__ = '2021-04-22'
+__author__ = 'marek.hoffmann@fsv.cvut.cz, monika.krizova@fsv.cvut.cz'
+__date__ = '2021-06-04'
 __copyright__ = 'Copyright 2021, Group B - FGIS 2021'
 
 import unittest
@@ -31,7 +31,7 @@ class GoogleSheetsDownloaderDialogTest(unittest.TestCase):
 
     def test_icon_png(self):
         """Test we can click OK."""
-        path = ':/plugins/GoogleSheetsDownloader/icon.png'
+        path = ':/plugins/GoogleSheetsDownloader2/icon.png'
         icon = QIcon(path)
         self.assertFalse(icon.isNull())
 

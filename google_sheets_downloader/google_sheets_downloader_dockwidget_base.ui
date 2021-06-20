@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GoogleSheetsDownloader2DockWidgetBase</class>
- <widget class="QDockWidget" name="GoogleSheetsDownloader2DockWidgetBase">
+ <class>GoogleSheetsDownloaderDockWidgetBase</class>
+ <widget class="QDockWidget" name="GoogleSheetsDownloaderDockWidgetBase">
   <property name="geometry">
    <rect>
     <x>0</x>

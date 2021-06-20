@@ -16,19 +16,19 @@ import unittest
 
 from qgis.PyQt.QtGui import QDockWidget
 
-from google_sheets_downloader2_dockwidget import GoogleSheetsDownloader2DockWidget
+from google_sheets_downloader_dockwidget import GoogleSheetsDownloaderDockWidget
 
 from utilities import get_qgis_app
 
 QGIS_APP = get_qgis_app()
 
 
-class GoogleSheetsDownloader2DockWidgetTest(unittest.TestCase):
+class GoogleSheetsDownloaderDockWidgetTest(unittest.TestCase):
     """Test dockwidget works."""
 
     def setUp(self):
         """Runs before each test."""
-        self.dockwidget = GoogleSheetsDownloader2DockWidget(None)
+        self.dockwidget = GoogleSheetsDownloaderDockWidget(None)
 
     def tearDown(self):
         """Runs after each test."""
@@ -39,7 +39,7 @@ class GoogleSheetsDownloader2DockWidgetTest(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(GoogleSheetsDownloader2DialogTest)
+    suite = unittest.makeSuite(GoogleSheetsDownloaderDialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 

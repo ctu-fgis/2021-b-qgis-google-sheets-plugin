@@ -3,17 +3,17 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Google Sheets downloader
+name=Google Sheets Downloader
 qgisMinimumVersion=3.0
 description=This plugin downloads data from Google Sheets
 version=0.1
 author=Group B - FGIS 2021
-email=monika.krizova@fsv.cvut.cz
+email=marek.hoffmann@fsv.cvut.cz, monika.krizova@fsv.cvut.cz
 
-about=Plugin downloads table data from GDrive (Google Sheets) and adds them to the current project.
+about=This plugin downloads data from Google Sheets and adds them to the QGIS project as a vector layer.
 
 tracker=https://github.com/ctu-fgis/2021-b-qgis-google-sheets-plugin/issues
-repository=https://github.com/ctu-fgis/2021-b-qgis-google-sheets-plugin
+repository=https://github.com/ctu-fgis/2021-b-qgis-google-sheets-plugin/i
 # End of mandatory metadata
 
 # Recommended items:
