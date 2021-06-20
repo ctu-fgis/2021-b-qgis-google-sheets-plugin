@@ -237,6 +237,10 @@ class GoogleSheetsDownloader:
             self.dockwidget.show()
 
     def on_load(self):
+        """
+        Start after pressing "load", assigning values from the plugin to the variables.
+        Call functions for downloading data and create new QGIS layer.
+        """
         self.filepath = os.path.dirname(__file__)
 
         # input data
@@ -252,15 +256,16 @@ class GoogleSheetsDownloader:
         else:
             self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
 
-        # task = LoadTask("authorization", None, filename, Xcol, Ycol, CRS)
-        # task = LoadTask("authorization", self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
-        # task.objectSignal.connect(self.complete_task_processing)
-        # QgsApplication.taskManager().addTask(task)
-
-    # def complete_task_processing(self, taskResult):
-    #     self.loadVector(self.filepath, self.filename, self.Xcol, self.Ycol, self.CRS)
-
     def loadVector(self, filepath, filename, X, Y, CRS):
+        """
+        Create new point layer from the csv file.
+
+        :param filepath: path to the plugin/project
+        :param filename: name of the sheet on GDrive
+        :param X: name of the column with X coordinate
+        :param Y: name of the column with Y coordinate
+        :param CRS: coordinate reference system
+        """
         uri = "file:///" + filepath + "/sheets/" + filename + ".csv" + "?encoding={}&delimiter={}&xField={}&yField={}&crs={}&decimalPoint={}".format(
             "UTF-8", ",", X, Y, CRS, ",")
 

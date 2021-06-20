@@ -18,8 +18,12 @@ SCOPES = [
           ]
 
 def getCredentials(filepath):
-    """Shows basic usage of the Drive v3 API.
-    Prints the names and ids of the first 10 files the user has access to.
+    """
+    Get and store access to the Google Drive account.
+
+    :param filepath: path to the plugin/project
+
+    :return: GDrive access
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -44,7 +48,14 @@ def getCredentials(filepath):
     return build('drive', 'v3', credentials=creds)
 
 def search(service, query):
-    # search for the file
+    """
+    Search for the file on GDrive.
+
+    :param service: credentials in the required format
+    :param query: modified name of the sheet
+
+    :return: searched file ID, file name, file mimeType
+    """
     result = []
     page_token = None
     while True:
@@ -63,6 +74,12 @@ def search(service, query):
     return result
 
 def downloadSpreadsheet(filepath, filename):
+    """
+    Download sheet as a csv file from GDrive.
+
+    :param filepath: path to the plugin/project
+    :param filename: name of the sheet on GDrive
+    """
     service = getCredentials(filepath)
     search_result = search(service, query=f"name='{filename}'")
     file_id = search_result[0][0]
