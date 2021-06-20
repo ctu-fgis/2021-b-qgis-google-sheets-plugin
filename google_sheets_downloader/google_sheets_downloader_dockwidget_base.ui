@@ -11,28 +11,28 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Google Sheets Downloader 2</string>
+   <string>Google Sheets Downloader</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QFormLayout" name="formLayout">
     <item row="1" column="1">
      <widget class="QLineEdit" name="typeName">
       <property name="text">
-       <string>body</string>
+       <string/>
       </property>
      </widget>
     </item>
     <item row="2" column="1">
      <widget class="QLineEdit" name="typeX">
       <property name="text">
-       <string>X</string>
+       <string/>
       </property>
      </widget>
     </item>
     <item row="3" column="1">
      <widget class="QLineEdit" name="typeY">
       <property name="text">
-       <string>Y</string>
+       <string/>
       </property>
      </widget>
     </item>
