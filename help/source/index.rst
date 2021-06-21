@@ -3,6 +3,7 @@ Google Sheets Downloader plugin
 The GoogleSheetsDownloader plugin allows downloading data saved in Google Sheets and add them to the QGIS project as a point layer.
 The plugin was created as a semestral project for the subject 155FGIS on CTU Prague.
 
+-------------------------------
 
 Installing the plugin
 -------------------------------
@@ -13,11 +14,11 @@ Installing the plugin
 2. Open "Manage and install plugins..." in your QGIS a select "Install from zip"
 
 .. image:: images/install.PNG
-   :width: 150%
+   :width: 120%
 
 3. Find your file in the file viewer and press "Install plugin", after the installing this icon will be added
 
-.. image:: images/icon2.png  
+.. image:: images/icon2.PNG 
 
 
 4. Open OSGeo4W Shell and install library for accessing the GDrive API
