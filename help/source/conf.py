@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# GoogleSheetsDownloader2 documentation build configuration file, created by
+# GoogleSheetsDownloader documentation build configuration file, created by
 # sphinx-quickstart on Sun Feb 12 17:11:03 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -12,6 +12,8 @@
 # serve to show the default.
 
 import sys, os
+sys.path.insert(0,os.path.abspath('.'))
+sys.path.append('source')
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -40,8 +42,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GoogleSheetsDownloader2'
-copyright = u'2013, Group B - FGIS 2021'
+project = u'GoogleSheetsDownloader'
+copyright = u'2021, Group B - FGIS 2021'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -91,12 +93,12 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+# html_theme_options = {'background-color': '#92a8d1'}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
