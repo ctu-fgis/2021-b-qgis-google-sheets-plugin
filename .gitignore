@@ -2,3 +2,5 @@ eq-data.csv
 __pycache__/
 token.json
 .idea/
+build/
+*~
